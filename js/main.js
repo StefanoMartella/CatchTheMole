@@ -195,7 +195,7 @@ function Mole(element, dimension) {
     actualRecordLabel.innerText = `Record: ${storedRecord ? storedRecord : '0'} moles`;
 
     let countdownLabel = document.createElement('span');
-    countdownLabel.innerText = '30';
+    countdownLabel.innerText = '10';
     countdownLabel.id = 'countdown';
     countdownLabel.style.fontWeight = 'bold';
     countdownLabel.style.fontSize = '25px';
@@ -208,7 +208,7 @@ function Mole(element, dimension) {
   }
 
   function startGame(startButton) {
-    let countdown = 30;
+    let countdown = 10;
     score = 0;
     startButton.disabled = true;
     startButton.style.opacity = '0.5';
