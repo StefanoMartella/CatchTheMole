@@ -66,7 +66,7 @@ function Mole(element, dimension) {
       let mole = document.createElement('img');
       mole.id = `mole-${id}`;
       mole.classList.add('mole');
-      mole.src = 'img/mole.svg';
+      mole.src = './src/assets/img/mole.svg';
       mole.style.zIndex = "-1";
       mole.style.position = "absolute";
       mole.style.bottom = "0";
@@ -76,7 +76,7 @@ function Mole(element, dimension) {
       mole.addEventListener('dragstart', e => e.preventDefault());
       mole.addEventListener('mousedown', function() {
         if(lastMoleHit !== mole.id) {
-          mole.style.backgroundImage = 'url("./img/stars.svg")';
+          mole.style.backgroundImage = 'url("./src/assets//img/stars.svg")';
           setTimeout(() => {
             mole.style.backgroundImage = null;
           }, 300);
@@ -110,7 +110,7 @@ function Mole(element, dimension) {
       tunnel.classList.add('tunnel');
 
       let moleImg = document.createElement('img');
-      moleImg.src = 'img/mole-tunnel.svg';
+      moleImg.src = './src/assets/img/mole-tunnel.svg';
       moleImg.style.height = '40%';
       moleImg.addEventListener('dragstart', e => e.preventDefault());
 

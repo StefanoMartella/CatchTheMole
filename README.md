@@ -1,6 +1,6 @@
 # Catch the Mole
 
-Realized using JavaScript (Only)
+Realized with JavaScript
 
 ![gif](gif/demo.gif)
 
