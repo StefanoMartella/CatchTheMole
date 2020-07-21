@@ -1,3 +1,7 @@
+const setStyle = (element, style) => Object.keys(style).forEach(property =>
+  element.style[property] = style[property]
+);
+
 function Mole(element, dimension) {
   this.isCrazy = false;
   this.visible = false;
@@ -5,9 +9,9 @@ function Mole(element, dimension) {
   this.innerTimeout = null;
   this.show = function() {
     return new Promise((resolve) => {
-      element.style.bottom = `${dimension}px`;
+      setStyle(element, { bottom: `${dimension}px` });
       setTimeout(() => {
-        element.style.zIndex = '0';
+        setStyle(element, { zIndex: '0' });
         this.visible = true;
         resolve();
       }, 150); // A little bit less than 300 (transition duration)
@@ -15,9 +19,9 @@ function Mole(element, dimension) {
   };
   this.hide = function() {
     return new Promise((resolve) => {
-      element.style.zIndex = '-1';
+      setStyle(element, { zIndex: '-1' });
       setTimeout(() => {
-        element.style.bottom = '0';
+        setStyle(element, { bottom: '0' });
         this.visible = false;
         resolve();
       }, 150); // A little bit less than 300 (transition duration)
@@ -52,7 +56,13 @@ function Mole(element, dimension) {
   let lastMoleHit;
   let score = 0;
 
-  styleCanvas();
+  setStyle(canvas, {
+    display: 'flex',
+    marginBottom: '80px',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  });
   initializeStartButton();
   initializeLabels();
   createGrid({rowsNumber: 3, columnsNumber: 3});
@@ -67,22 +77,21 @@ function Mole(element, dimension) {
       mole.id = `mole-${id}`;
       mole.classList.add('mole');
       mole.src = './src/assets/img/mole.svg';
-      mole.style.zIndex = "-1";
-      mole.style.position = "absolute";
-      mole.style.bottom = "0";
-      mole.style.width = `${dimension}px`;
-      mole.style.cursor = "pointer";
-      mole.style.transition = "all .3s ease-in-out";
+      setStyle(mole, {
+        zIndex: "-1",
+        position: "absolute",
+        bottom: "0",
+        width: `${dimension}px`,
+        cursor: "pointer",
+        transition: "all .3s ease-in-out",
+      });
       mole.addEventListener('dragstart', e => e.preventDefault());
       mole.addEventListener('mousedown', function() {
         if(lastMoleHit !== mole.id) {
-          mole.style.backgroundImage = 'url("./src/assets//img/stars.svg")';
-          setTimeout(() => {
-            mole.style.backgroundImage = null;
-          }, 300);
+          setStyle(mole, { backgroundImage: 'url("./src/assets//img/stars.svg")' });
+          setTimeout(() => setStyle(mole, { backgroundImage: null }), 300);
           lastMoleHit = mole.id;
-          document.getElementById('actualScore').innerText =
-            `${++score} moles caught`;
+          document.getElementById('actualScore').innerText = `${++score} moles caught`;
         }
       });
 
@@ -96,7 +105,7 @@ function Mole(element, dimension) {
       let row = document.createElement("div");
       row.id = `row-${i}`;
       row.classList.add('row');
-      row.style.display = 'flex';
+      setStyle(row, { display: 'flex' });
 
       for(let j = 0; j < columnsNumber; j++) {
         row.appendChild(createTunnel(`${i}${j}`));
@@ -111,7 +120,7 @@ function Mole(element, dimension) {
 
       let moleImg = document.createElement('img');
       moleImg.src = './src/assets/img/mole-tunnel.svg';
-      moleImg.style.height = '40%';
+      setStyle(moleImg, { height: '40%' });
       moleImg.addEventListener('dragstart', e => e.preventDefault());
 
       tunnel.appendChild(moleImg);
@@ -120,54 +129,48 @@ function Mole(element, dimension) {
       return (function styleTunnel() {
         // Using closure
         tunnel.id = `tunnel-${id}`;
-        tunnel.style.backgroundColor = 'darkKhaki';
-        tunnel.style.borderWidth = "2px";
-        tunnel.style.borderColor = "#54596e"; // Same as mole's border
-        tunnel.style.borderStyle = "solid";
-        tunnel.style.height = `${dimension}px`;
-        tunnel.style.width = `${dimension}px`;
-        tunnel.style.margin = `0 ${dimension}px`;
-        tunnel.style.marginTop = `${dimension + 20}px`;
-        tunnel.style.display = "flex";
-        tunnel.style.position = "relative";
-        tunnel.style.justifyContent = "center";
-        tunnel.style.alignItems = "center";
-        tunnel.style.borderRadius = "0 0 12px 12px";
-        tunnel.style.boxShadow = "0px 5px 8px 0px rgba(0,0,0,0.75)";
+        setStyle(tunnel, {
+          backgroundColor: 'darkKhaki',
+          borderWidth: "2px",
+          borderColor: "#54596e", // Same as mole's border
+          borderStyle: "solid",
+          height: `${dimension}px`,
+          width: `${dimension}px`,
+          margin: `0 ${dimension}px`,
+          marginTop: `${dimension + 20}px`,
+          display: "flex",
+          position: "relative",
+          justifyContent: "center",
+          alignItems: "center",
+          borderRadius: "0 0 12px 12px",
+          boxShadow: "0px 5px 8px 0px rgba(0,0,0,0.75)",
+        });
 
         return tunnel;
       })();
     }
   }
 
-  function styleCanvas() {
-    canvas.style.display= 'flex';
-    canvas.style.marginBottom = '80px';
-    canvas.style.flexDirection= 'column';
-    canvas.style.alignItems= 'center';
-    canvas.style.justifyContent= 'center';
-  }
-
   function initializeStartButton() {
     let startButton = document.createElement('button');
     startButton.innerText = 'START';
-    startButton.style.color = 'darkOliveGreen';
-    startButton.style.borderColor = 'darkOliveGreen';
-    startButton.style.borderWidth = "2px";
-    startButton.style.borderStyle = "solid";
-    startButton.style.fontWeight = "bold";
-    startButton.style.backgroundColor = "white";
-    startButton.style.borderRadius = "12px";
-    startButton.style.padding = "10px 30px";
-    startButton.style.cursor = "pointer";
-    startButton.addEventListener('mouseover', () => {
-      startButton.style.color = 'white';
-      startButton.style.backgroundColor = "darkOliveGreen";
+    setStyle(startButton, {
+      color: 'darkOliveGreen',
+      borderColor: 'darkOliveGreen',
+      borderWidth: "2px",
+      borderStyle: "solid",
+      fontWeight: "bold",
+      backgroundColor: "white",
+      borderRadius: "12px",
+      padding: "10px 30px",
+      cursor: "pointer",
     });
-    startButton.addEventListener('mouseout', () => {
-      startButton.style.color = 'darkOliveGreen';
-      startButton.style.backgroundColor = "white";
-    })
+    startButton.addEventListener('mouseover', () =>
+      setStyle(startButton, { color: 'white', backgroundColor: 'darkOliveGreen' })
+    );
+    startButton.addEventListener('mouseout', () =>
+      setStyle(startButton, { color: 'darkOliveGreen', backgroundColor: 'white' })
+    );
     startButton.addEventListener('click', () => startGame(startButton));
     canvas.after(startButton);
   }
@@ -176,29 +179,28 @@ function Mole(element, dimension) {
     const storedRecord = window.localStorage.getItem('record');
 
     let labelContainer = document.createElement('div');
-    labelContainer.style.display = 'flex';
-    labelContainer.style.flexDirection = 'row';
-    labelContainer.style.justifyContent = 'space-evenly';
-    labelContainer.style.alignItems = 'flex-end';
-    labelContainer.style.width = '100%';
+    setStyle(labelContainer, {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
+      alignItems: 'flex-end',
+      width: '100%',
+    });
 
     let actualScoreLabel = document.createElement('span');
     actualScoreLabel.id = 'actualScore';
-    actualScoreLabel.style.fontWeight = 'bold';
-    actualScoreLabel.style.textTransform = 'uppercase';
     actualScoreLabel.innerText = '0 moles caught';
+    setStyle(actualScoreLabel, { fontWeight: 'bold', textTransform: 'uppercase' });
 
     let actualRecordLabel = document.createElement('span');
     actualRecordLabel.id = 'actualRecord';
-    actualRecordLabel.style.fontWeight = 'bold';
-    actualRecordLabel.style.textTransform = 'uppercase';
     actualRecordLabel.innerText = `Record: ${storedRecord ? storedRecord : '0'} moles`;
+    setStyle(actualRecordLabel, { fontWeight: 'bold', textTransform: 'uppercase' });
 
     let countdownLabel = document.createElement('span');
     countdownLabel.innerText = '30';
     countdownLabel.id = 'countdown';
-    countdownLabel.style.fontWeight = 'bold';
-    countdownLabel.style.fontSize = '25px';
+    setStyle(countdownLabel, { fontWeight: 'bold', fontSize: '25px' });
 
     labelContainer.appendChild(actualScoreLabel);
     labelContainer.appendChild(countdownLabel);
@@ -211,7 +213,7 @@ function Mole(element, dimension) {
     let countdown = 30;
     score = 0;
     startButton.disabled = true;
-    startButton.style.opacity = '0.5';
+    setStyle(startButton, { opacity: '0.5' });
 
     document.getElementById('actualScore').innerText = '0 moles caught';
 
@@ -229,7 +231,7 @@ function Mole(element, dimension) {
       clearInterval(countdownInterval);
       moles.forEach(mole => mole.stopMole());
       startButton.disabled = false;
-      startButton.style.opacity = '1';
+      setStyle(startButton, { opacity: '1' });
 
       if (score > window.localStorage.getItem('record')) {
         window.localStorage.setItem('record', score);
